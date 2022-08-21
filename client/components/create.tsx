@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
+import { Form } from "../src/vite-env";
 
 export default function Create() {
-    const [form, setForm] = useState({
+    const [form, setForm] = useState<Form>({
         name: "",
         position: "",
         level: "",
@@ -10,14 +11,14 @@ export default function Create() {
     const navigate = useNavigate();
 
     // These methods will update the state properties.
-    function updateForm(value) {
+    function updateForm(value: Form) {
         return setForm((prev) => {
             return { ...prev, ...value };
         });
     }
 
     // This function will handle the submission.
-    async function onSubmit(e) {
+    async function onSubmit(e: { preventDefault: () => void }) {
         e.preventDefault();
 
         // When a post request is sent to the create url, we'll add a new record to the database.
@@ -50,7 +51,11 @@ export default function Create() {
                         className="form-control"
                         id="name"
                         value={form.name}
-                        onChange={(e) => updateForm({ name: e.target.value })}
+                        onChange={(e) =>
+                            updateForm({
+                                name: e.target.value,
+                            })
+                        }
                     />
                 </div>
                 <div className="form-group">
@@ -61,7 +66,9 @@ export default function Create() {
                         id="position"
                         value={form.position}
                         onChange={(e) =>
-                            updateForm({ position: e.target.value })
+                            updateForm({
+                                position: e.target.value,
+                            })
                         }
                     />
                 </div>
@@ -75,7 +82,9 @@ export default function Create() {
                             value="Intern"
                             checked={form.level === "Intern"}
                             onChange={(e) =>
-                                updateForm({ level: e.target.value })
+                                updateForm({
+                                    level: e.target.value,
+                                })
                             }
                         />
                         <label
@@ -94,7 +103,9 @@ export default function Create() {
                             value="Junior"
                             checked={form.level === "Junior"}
                             onChange={(e) =>
-                                updateForm({ level: e.target.value })
+                                updateForm({
+                                    level: e.target.value,
+                                })
                             }
                         />
                         <label
@@ -113,7 +124,9 @@ export default function Create() {
                             value="Senior"
                             checked={form.level === "Senior"}
                             onChange={(e) =>
-                                updateForm({ level: e.target.value })
+                                updateForm({
+                                    level: e.target.value,
+                                })
                             }
                         />
                         <label

@@ -14,7 +14,7 @@ const App = () => {
         <div className="w-75 m-auto">
             <Navbar />
             <Routes>
-                <Route exact path="/" element={<RecordList />} />
+                <Route path="/" element={<RecordList />} />
                 <Route path="/edit/:id" element={<Edit />} />
                 <Route path="/create" element={<Create />} />
             </Routes>

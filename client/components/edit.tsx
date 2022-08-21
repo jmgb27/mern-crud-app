@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
+import { Form } from "../src/vite-env";
 
 export default function Edit() {
-    const [form, setForm] = useState({
+    const [form, setForm] = useState<Form>({
         name: "",
         position: "",
         level: "",
         records: [],
     });
+
     const params = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchData() {
-            const id = params.id.toString();
+            const id = params.id?.toString();
             const response = await fetch(
-                `http://localhost:5000/record/${params.id.toString()}`
+                `http://localhost:5000/record/${params.id?.toString()}`
             );
 
             if (!response.ok) {
@@ -40,13 +42,13 @@ export default function Edit() {
     }, [params.id, navigate]);
 
     // These methods will update the state properties.
-    function updateForm(value) {
+    function updateForm(value: Form) {
         return setForm((prev) => {
             return { ...prev, ...value };
         });
     }
 
-    async function onSubmit(e) {
+    async function onSubmit(e: { preventDefault: () => void }) {
         e.preventDefault();
         const editedPerson = {
             name: form.name,
@@ -78,7 +80,11 @@ export default function Edit() {
                         className="form-control"
                         id="name"
                         value={form.name}
-                        onChange={(e) => updateForm({ name: e.target.value })}
+                        onChange={(e) =>
+                            updateForm({
+                                name: e.target.value,
+                            })
+                        }
                     />
                 </div>
                 <div className="form-group">
@@ -89,7 +95,9 @@ export default function Edit() {
                         id="position"
                         value={form.position}
                         onChange={(e) =>
-                            updateForm({ position: e.target.value })
+                            updateForm({
+                                position: e.target.value,
+                            })
                         }
                     />
                 </div>
@@ -103,7 +111,9 @@ export default function Edit() {
                             value="Intern"
                             checked={form.level === "Intern"}
                             onChange={(e) =>
-                                updateForm({ level: e.target.value })
+                                updateForm({
+                                    level: e.target.value,
+                                })
                             }
                         />
                         <label
@@ -122,7 +132,9 @@ export default function Edit() {
                             value="Junior"
                             checked={form.level === "Junior"}
                             onChange={(e) =>
-                                updateForm({ level: e.target.value })
+                                updateForm({
+                                    level: e.target.value,
+                                })
                             }
                         />
                         <label
@@ -141,7 +153,9 @@ export default function Edit() {
                             value="Senior"
                             checked={form.level === "Senior"}
                             onChange={(e) =>
-                                updateForm({ level: e.target.value })
+                                updateForm({
+                                    level: e.target.value,
+                                })
                             }
                         />
                         <label

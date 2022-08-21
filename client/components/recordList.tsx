@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Form, Props } from "../src/vite-env";
 
-const Record = (props) => (
+const Record = (props: Props) => (
     <tr>
         <td>{props.record.name}</td>
         <td>{props.record.position}</td>
@@ -9,8 +10,8 @@ const Record = (props) => (
         <td>
             <Link className="btn btn-link" to={`/edit/${props.record._id}`}>
                 Edit
-            </Link>{" "}
-            |
+            </Link>
+
             <button
                 className="btn btn-link"
                 onClick={() => {
@@ -24,7 +25,7 @@ const Record = (props) => (
 );
 
 export default function RecordList() {
-    const [records, setRecords] = useState([]);
+    const [records, setRecords] = useState<any[]>([]);
 
     // This method fetches the records from the database.
     useEffect(() => {
@@ -47,7 +48,7 @@ export default function RecordList() {
     }, [records.length]);
 
     // This method will delete a record
-    async function deleteRecord(id) {
+    async function deleteRecord(id: Props) {
         await fetch(`http://localhost:5000/${id}`, {
             method: "DELETE",
         });
