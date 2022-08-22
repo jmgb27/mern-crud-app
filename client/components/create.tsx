@@ -18,13 +18,17 @@ export default function Create() {
     }
 
     // This function will handle the submission.
-    async function onSubmit(e: { preventDefault: () => void }) {
+    async function onSubmit(
+        e:
+            | React.ChangeEvent<HTMLInputElement>
+            | React.FormEvent<HTMLFormElement>
+    ): Promise<void> {
         e.preventDefault();
 
         // When a post request is sent to the create url, we'll add a new record to the database.
         const newPerson = { ...form };
 
-        await fetch("http://localhost:5000/record/add", {
+        await fetch(`${import.meta.env.VITE_URL}:5000/record/add`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
