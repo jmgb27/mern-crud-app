@@ -3,6 +3,9 @@ import { useNavigate } from "react-router";
 import { Form } from "../src/vite-env";
 
 export default function Create() {
+    const [resStat, setResStat] = useState<number>(0);
+    const [err, errCatch] = useState<any[]>([]);
+
     const [form, setForm] = useState<Form>({
         name: "",
         position: "",
@@ -28,25 +31,41 @@ export default function Create() {
         // When a post request is sent to the create url, we'll add a new record to the database.
         const newPerson = { ...form };
 
-        await fetch(`${import.meta.env.VITE_URL}:5000/record/add`, {
+        await fetch(`${import.meta.env.VITE_URL}/record/add`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(newPerson),
-        }).catch((error) => {
-            window.alert(error);
-            return;
-        });
-
+        })
+            .catch((error) => {
+                window.alert(error);
+                return;
+            })
+            .then((res) => {
+                return res?.json();
+            })
+            .then((data) => {
+                errCatch(data);
+            });
         setForm({ name: "", position: "", level: "" });
-        // navigate("/");
     }
 
     // This following section will display the form that takes the input from the user.
     return (
         <div>
             <h3>Create New Record</h3>
+            {err.map((x: string) => {
+                return x === "Success" ? (
+                    <div className="alert alert-success" role="alert">
+                        {x}
+                    </div>
+                ) : (
+                    <div className="alert alert-danger" role="alert">
+                        {x}
+                    </div>
+                );
+            })}
             <form onSubmit={onSubmit}>
                 <div className="form-group">
                     <label htmlFor="name">Name</label>

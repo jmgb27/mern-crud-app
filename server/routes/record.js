@@ -34,11 +34,18 @@ recordRoutes.route("/record/add").post(async (req, res) => {
     };
     console.log(myObj);
 
-    const response = await db.create(myObj);
-
-    console.log(response);
-
-    res.json({ status: "ok" });
+    try {
+        const response = await db.create(myObj);
+        console.log(response);
+        res.json(["Success"]);
+    } catch (err) {
+        if (err.name === "ValidationError") {
+            console.error(Object.values(err.errors).map((val) => val.message));
+            res.json(Object.values(err.errors).map((val) => val.message));
+        } else {
+            console.error(err);
+        }
+    }
 });
 
 // This section will help you update a record by id.

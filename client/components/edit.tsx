@@ -17,9 +17,7 @@ export default function Edit() {
         async function fetchData() {
             const id = params.id?.toString();
             const response = await fetch(
-                `${
-                    import.meta.env.VITE_URL
-                }:5000/record/${params.id?.toString()}`
+                `${import.meta.env.VITE_URL}/record/${params.id?.toString()}`
             );
 
             if (!response.ok) {
@@ -64,7 +62,7 @@ export default function Edit() {
         };
 
         // This will send a post request to update the data in the database.
-        await fetch(`${import.meta.env.VITE_URL}:5000/update/${params.id}`, {
+        await fetch(`${import.meta.env.VITE_URL}/update/${params.id}`, {
             method: "POST",
             body: JSON.stringify(editedPerson),
             headers: {
