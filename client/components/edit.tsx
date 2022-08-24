@@ -13,6 +13,15 @@ export default function Edit() {
     const params = useParams();
     const navigate = useNavigate();
 
+    //handle json response status
+    const [resStat, setResStat] = useState<number | undefined>(0);
+
+    //handle json response
+    const [jRes, setjRes] = useState<any[]>([]);
+
+    //this state will enable or disable input while fetching the data
+    const [isDisabled, setDisStatus] = useState<boolean>(true);
+
     useEffect(() => {
         async function fetchData() {
             const id = params.id?.toString();
@@ -34,10 +43,12 @@ export default function Edit() {
             }
 
             setForm(record);
+
+            //This will then now enable the input since we already fetch the data
+            setDisStatus(false);
         }
 
         fetchData();
-
         return;
     }, [params.id, navigate]);
 
@@ -68,15 +79,33 @@ export default function Edit() {
             headers: {
                 "Content-Type": "application/json",
             },
-        });
-
-        // navigate("/");
+        })
+            .then((res) => {
+                setResStat(res.status);
+                return res.json();
+            })
+            .then((data) => {
+                setjRes(data);
+            });
     }
-
+    {
+        resStat === 200 ? navigate("/") : null;
+    }
     // This following section will display the form that takes input from the user to update the data.
     return (
         <div>
             <h3>Update Record</h3>
+            {jRes.map((x: string) => {
+                return resStat === 200 ? (
+                    <div className="alert alert-success" role="alert">
+                        {x}
+                    </div>
+                ) : (
+                    <div className="alert alert-danger" role="alert">
+                        {x}
+                    </div>
+                );
+            })}
             <form onSubmit={onSubmit}>
                 <div className="form-group">
                     <label htmlFor="name">Name: </label>
@@ -90,6 +119,7 @@ export default function Edit() {
                                 name: e.target.value,
                             })
                         }
+                        disabled={isDisabled}
                     />
                 </div>
                 <div className="form-group">
@@ -104,6 +134,7 @@ export default function Edit() {
                                 position: e.target.value,
                             })
                         }
+                        disabled={isDisabled}
                     />
                 </div>
                 <div className="form-group">
@@ -120,6 +151,7 @@ export default function Edit() {
                                     level: e.target.value,
                                 })
                             }
+                            disabled={isDisabled}
                         />
                         <label
                             htmlFor="positionIntern"
@@ -141,6 +173,7 @@ export default function Edit() {
                                     level: e.target.value,
                                 })
                             }
+                            disabled={isDisabled}
                         />
                         <label
                             htmlFor="positionJunior"
@@ -162,6 +195,7 @@ export default function Edit() {
                                     level: e.target.value,
                                 })
                             }
+                            disabled={isDisabled}
                         />
                         <label
                             htmlFor="positionSenior"

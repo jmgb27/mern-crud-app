@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { Form } from "../src/vite-env";
 
 export default function Create() {
-    const [resStat, setResStat] = useState<number>(0);
+    const [resStat, setResStat] = useState<number | undefined>(0);
     const [err, errCatch] = useState<any[]>([]);
 
     const [form, setForm] = useState<Form>({
@@ -43,20 +43,26 @@ export default function Create() {
                 return;
             })
             .then((res) => {
+                setResStat(res?.status);
                 return res?.json();
             })
             .then((data) => {
                 errCatch(data);
             });
+
         setForm({ name: "", position: "", level: "" });
     }
+
+    // {
+    //     resStat === 200 ? navigate("/") : null;
+    // }
 
     // This following section will display the form that takes the input from the user.
     return (
         <div>
             <h3>Create New Record</h3>
             {err.map((x: string) => {
-                return x === "Success" ? (
+                return resStat === 200 ? (
                     <div className="alert alert-success" role="alert">
                         {x}
                     </div>
