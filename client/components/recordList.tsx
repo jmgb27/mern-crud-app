@@ -24,6 +24,15 @@ const Record = (props: Props) => (
     </tr>
 );
 
+const RecordsLoading = () => (
+    <tr>
+        <td>{<p>Loading...</p>}</td>
+        <td>{<p>Loading...</p>}</td>
+        <td>{<p>Loading...</p>}</td>
+        <td></td>
+    </tr>
+);
+
 export default function RecordList() {
     const [records, setRecords] = useState<any[]>([]);
 
@@ -57,19 +66,6 @@ export default function RecordList() {
         setRecords(newRecords);
     }
 
-    // This method will map out the records on the table
-    function recordList() {
-        return records.map((record) => {
-            return (
-                <Record
-                    record={record}
-                    deleteRecord={() => deleteRecord(record._id)}
-                    key={record._id}
-                />
-            );
-        });
-    }
-
     // This following section will display the table with the records of individuals.
     return (
         <div>
@@ -83,7 +79,18 @@ export default function RecordList() {
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>{recordList()}</tbody>
+                <tbody>
+                    {records.map((record) => {
+                        return (
+                            <Record
+                                record={record}
+                                deleteRecord={() => deleteRecord(record._id)}
+                                key={record._id}
+                            />
+                        );
+                    })}
+                    {records.length === 0 && <RecordsLoading />}
+                </tbody>
             </table>
         </div>
     );

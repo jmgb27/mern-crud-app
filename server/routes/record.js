@@ -37,8 +37,10 @@ recordRoutes.route("/record/add").post(async (req, res) => {
     try {
         const response = await db.create(myObj);
         console.log(response);
+        res.status(200);
         res.json(["Success"]);
     } catch (err) {
+        res.status(400);
         if (err.name === "ValidationError") {
             console.error(Object.values(err.errors).map((val) => val.message));
             res.json(Object.values(err.errors).map((val) => val.message));
@@ -65,8 +67,8 @@ recordRoutes.route("/update/:id").post(async (req, res) => {
     );
 
     console.log(response);
-
-    res.json({ status: "ok" });
+    res.status(200);
+    res.json(["Success"]);
 });
 
 // This section will help you delete a record
